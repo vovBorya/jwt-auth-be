@@ -2,16 +2,17 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const db = require("../db/db");
+const verifySignUp = require("../middlewares/verifySignUp");
 
 const Op = db.Sequelize.Op;
 
 const Users = db.users;
 const Roles = db.roles;
 
-exports.signIn = async (req, res) => {
+const signIn = async (req, res) => {
     const { nameOrEmail, password } = req.body;
 
-    console.log({ nameOrEmail, password })
+    console.log({ nameOrEmail, password });
 
     const user = await Users.findOne({
         where: {
@@ -52,7 +53,7 @@ exports.signIn = async (req, res) => {
     });
 };
 
-exports.signUp = async (req, res) => {
+const signUp = async (req, res) => {
     const { name, email, password, role } = req.body;
 
     try {
@@ -101,3 +102,5 @@ exports.signUp = async (req, res) => {
         res.status(500).send({ message: e.message });
     }
 };
+
+module.exports = { signIn, signUp };
